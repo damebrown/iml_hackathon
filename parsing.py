@@ -2,11 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import re
+# no emoji at the CS computers
 import emoji
 
-pathes = ["ConanOBrien_tweets.csv", "cristiano_tweets.csv", "donaldTrump_tweets.csv", "ellenShow_tweets.csv",
-          "jimmykimmel_tweets.csv", "joeBiden_tweets.csv", "KimKardashian_tweets.csv", "labronJames_tweets.csv",
-          "ladygaga_tweets.csv", "Schwarzenegger_tweets.csv"]
+pathes = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv", "data/ellenShow_tweets.csv",
+          "data/jimmykimmel_tweets.csv", "data/joeBiden_tweets.csv", "data/KimKardashian_tweets.csv", "data/labronJames_tweets.csv",
+          "data/ladygaga_tweets.csv", "data/Schwarzenegger_tweets.csv"]
 
 names = ["Donald Trump",
          "Joe Biden",
@@ -40,15 +41,35 @@ def extract_tags(str):
     return match
 
 
-def extract_len(tweet):
-    tweet = tweet.split(' ')
+def extract_len(orignal_tweet):
+    tweet = re.split(" ", orignal_tweet)
     number_of_words = len(tweet)
     shortest_word_length = min(tweet, key=len)
     longest_word_length = max(tweet, key=len)
     return tweet, number_of_words, longest_word_length, shortest_word_length
 
+
+def print_graph(y_asix, header):
+    plt.plot(names, y_asix)
+    plt.title(header)
+    plt.xlabel("tweeters users")
+    plt.xticks(rotation=90)
+    plt.legend()
+    plt.savefig(header)
+    plt.show()
+
+
+def counting(tweets):
+    num_of_words = []
+    for tweet in tweets:
+        t, num, l, s = extract_len(tweet)
+        num_of_words.append(num)
+    return np.mean(num_of_words), np.var(num_of_words)
+
+
 def count_emoji(tweet):
     return len(''.join(c for c in tweet if c in emoji.UNICODE_EMOJI))
+
 
 def is_it_spanish(tweet):
     s = re.findall(r"(á|õ)", tweet)
@@ -56,7 +77,20 @@ def is_it_spanish(tweet):
 
 
 def main():
+    all_tweets = []
+    num_of_words_var = []
+    num_of_words_mean = []
     for path in pathes:
         tweets = get_tweets(path)
+        tweets = np.array(tweets['tweet'])
+        mean, var = counting(tweets)
+        num_of_words_mean.append(mean)
+        num_of_words_var.append(var)
+        all_tweets.append(tweets)
+    print_graph(num_of_words_mean, "mean of numbers of words")
+    print_graph(num_of_words_var, "var of numbers of words")
 
-print(is_it_spanish('Acabei de fazer as minhas previsões para o R. Madrid vs. A. Madrid no #VivaRonaldo. E tu'))
+
+
+main()
+
