@@ -72,17 +72,6 @@ def get_tweet_len(tweets_list):
 def length(str):
     return len(str)
 
-
-def print_graph(y_asix, header):
-    plt.plot(names, y_asix)
-    plt.title(header)
-    plt.xlabel("tweeters users")
-    plt.xticks(rotation=90)
-    plt.legend()
-    plt.savefig(header)
-    plt.show()
-
-
 def counting(tweets):
     num_of_words = []
     for tweet in tweets:
@@ -97,7 +86,9 @@ def count_emoji(tweet):
 
 def is_it_spanish(tweet):
     s = re.findall(r"(á|õ)", tweet)
-    return len(s) > 0
+    if len(s) > 0:
+        return 1
+    return 0
 
 def count_link(tweet):
     s = re.findall(r"https:", tweet)
@@ -140,6 +131,31 @@ def build_lang_model(sentences):
     words = list(model.wv.vocab)
 
 
+def check_tweet(tweet):
+    lst = []
+    lst.append(len(extract_tags(tweet)))
+    lst.append(len(extract_hashtags(tweet)))
+    lst.append(count_emoji(tweet))
+    lst.append(is_it_spanish(tweet))
+    lst.append(count_link(tweet))
+    lst.append(len(extract_len(tweet)))
+    return lst
+
+
+def build_data(pre_data):
+    columns = ['tags', 'hashtags', 'emoji', 'spanish', 'links', 'length', 'label']
+    rows = []
+    pre_data = np.array(pre_data)
+    for d in pre_data:
+        l = d[0]
+        f = check_tweet(d[1])
+        f.append(l)
+        rows.append(f)
+    return pd.DataFrame(rows, columns=columns)
+
+
+build_data(get_tweets("data/ConanOBrien_tweets.csv"))
+
 if __name__ == "__main__":
     # frames = [get_tweets(f) for f in paths]
     all_tweets = pd.read_csv("raw_data/test.csv")
@@ -153,11 +169,11 @@ if __name__ == "__main__":
     all_tweets = add_features(all_tweets)
     # build_lang_model(splat)
 
-    g = (ggplot(all_tweets)
-         + aes(x='number_of_words', y='longest_word_length', color='user')
-         + geom_point()
-         + ggtitle('plotnine example: scatter plot')
-         )
-
-    fig = g.draw()
-    plt.show()
+    # g = (ggplot(all_tweets)
+    #      + aes(x='number_of_words', y='longest_word_length', color='user')
+    #      + geom_point()
+    #      + ggtitle('plotnine example: scatter plot')
+    #      )
+    #
+    # fig = g.draw()
+    # plt.show()
