@@ -11,16 +11,40 @@ from plotnine.data import mpg
 
 # from IPython import get_ipython
 # get_ipython().run_line_magic('matplotlib', 'inline')
+speacil = ['said', 'into', 'still', 'over', 'say', 'really','Hey', 'play', 'next', 'de', 'el',
+ 'Hello', 'para', 'against', 'Hala', "It's", '#Celebrate15M', 'asked:', 'que', 'Check',
+ '@Cristiano', 'What', 'Good', 'e', 'Madrid!', 'en', 'Madrid', 'CR7', 'match',
+ 'team', 'Real', 'photos', 'No', 'being', 'which', 'Border', 'were', 'years',
+ 'even', 'United', 'China', 'They', 'Mueller', 'States', 'there', 'Country',
+ 'Wall', 'He', 'U.S.', '@realDonaldTrump:', 'Democrats', 'Fake','full', 'here:',
+ 'gonna', 'did', 'show.', 'could', 'watch', 'birthday', 'she', 'hope', 'told',
+ '#GameofGames', 'you’re', '#ThanksSponsor', 'clip', 'favorite','Kimmel', '#MeanTweets',
+ '@TheCousinSal', 'ever', '#Oscars', '@jimmykimmel', '.@IamGuillermo', '.@RealDonaldTrump',
+ '@IamGuillermo', '#Kimmel', '@RealDonaldTrump', 'Our', 'Jimmy', 'most', 'NEW', 'edition',
+'class', 'Joe', 'country', 'Jill', '—', 'Dr.', 'must', 'tax', '@JoeBiden',
+ 'need', 'made', 'Romney', 'Vice', 'Obama', 'middle', 'American', 'America',
+ '@BarackObama:', 'vote', 'plan', 'campaign', 'Biden', 'VP', 'women','https://t.co/tbQezJs782',
+ 'Pop-Up', 'Red', 'off', 'Collection', '#KKWBODY', 'KKW', '💋', '12PM', '@kkwbeauty:',
+ 'Birthday', '#KUWTK', '😍', 'Shop', 'West', '@KimKardashian', '✨', 'Contour', '💕',
+ '@kkwbeauty', '3', 'https://t.co/PoBZ3bhjs8', 'Nude', 'SOLD', 'PST', 'TOMORROW',
+ '@KKWFRAGRANCE:', 'available', 'Classic', 'Kanye', 'Powder', 'Lipstick', 'Lip',
+ 'TODAY', 'tomorrow', 'Get', '#KKWBEAUTY', 'Crème', '@KKWMAFIA:','@LJFamFoundation:',
+ 'Love', "Let's", 'S/O', 'Man', 'bro', '1', '#StriveForGreatness', '#StriveForGreatness🚀',
+ 'lil', 'way', '@KingJames', 'brother', 'Keep', 'them', 'guys', 'homie', 'Congrats',
+ '🙏🏾', '@uninterrupted:', 'LeBron', "it's", 'world', 'Me', 'Tony', 'am', 'Lady',
+ 'Gaga', '#JOANNE', '@ladygaga', 'album', '+', 'thank', 'music', 'beautiful',
+'@TheArnoldFans:', 'gerrymandering', 'Join', 'fantastic', '@Schwarzenegger', 'Watch',
+ 'miss', '#CelebApprentice', 'Arnold', '@ArnoldSports', '.@Schwarzenegger']
 
-paths = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv",
-         "data/ellenShow_tweets.csv",
-         "data/jimmykimmel_tweets.csv", "data/joeBiden_tweets.csv", "data/KimKardashian_tweets.csv",
-         "data/labronJames_tweets.csv",
-         "data/ladygaga_tweets.csv", "data/Schwarzenegger_tweets.csv"]
+
+paths = ["data/donaldTrump_tweets.csv", "data/joeBiden_tweets.csv", "data/ConanOBrien_tweets.csv",
+         "data/ellenShow_tweets.csv", "data/KimKardashian_tweets.csv", "data/labronJames_tweets.csv",
+         "data/ladygaga_tweets.csv", "data/cristiano_tweets.csv", "data/jimmykimmel_tweets.csv",
+        "data/Schwarzenegger_tweets.csv"]
 
 names = ["Donald Trump", "Joe Biden" , "Conan O'brien", "Ellen Degeneres",
          "Kim Kardashian", "Lebron James", "Lady Gaga", "Cristiano Ronaldo",
-         "Jimmy kimmel", "Arnold schwarzenegger"]
+         "Jimmy kimmel", "schwarzenegger"]
 
 _tweets = []
 
@@ -130,6 +154,16 @@ def build_lang_model(sentences):
     model.save('model.bin')
     words = list(model.wv.vocab)
 
+def speacil_words(tweet):
+    tw = set(extract_len(tweet))
+    sp = set(speacil)
+    lst = tw.intersection(sp)
+    vec = np.zeros(len(speacil))
+    for i in range(len(speacil)):
+        if speacil[i] in lst:
+            vec[i] = 1
+    return vec.tolist()
+
 
 def check_tweet(tweet):
     lst = []
@@ -139,11 +173,14 @@ def check_tweet(tweet):
     lst.append(is_it_spanish(tweet))
     lst.append(count_link(tweet))
     lst.append(len(extract_len(tweet)))
+    lst.extend(speacil_words(tweet))
     return lst
 
 
 def build_data(pre_data):
-    columns = ['tags', 'hashtags', 'emoji', 'spanish', 'links', 'length', 'label']
+    columns = ['tags', 'hashtags', 'emoji', 'spanish', 'links', 'length']
+    columns.extend(speacil)
+    columns.append('label')
     rows = []
     pre_data = np.array(pre_data)
     for d in pre_data:
@@ -153,8 +190,9 @@ def build_data(pre_data):
         rows.append(f)
     return pd.DataFrame(rows, columns=columns)
 
+d = build_data(get_tweets("data/ConanOBrien_tweets.csv"))
+print(d.head())
 
-build_data(get_tweets("data/ConanOBrien_tweets.csv"))
 
 if __name__ == "__main__":
     # frames = [get_tweets(f) for f in paths]
