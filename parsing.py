@@ -7,7 +7,7 @@ import re
 import emoji
 from pandas.api.types import CategoricalDtype
 from plotnine import *
-from plotnine.data import mpg
+from feature_extraction import add_features
 
 # from IPython import get_ipython
 # get_ipython().run_line_magic('matplotlib', 'inline')
@@ -142,14 +142,15 @@ def build_lang_model(sentences):
 
 if __name__ == "__main__":
     # frames = [get_tweets(f) for f in paths]
-    all_tweets = pd.read_csv("raw_data/train.csv")
+    all_tweets = pd.read_csv("raw_data/test.csv")
     all_tweets_np = all_tweets.to_numpy()
     splat = split_tweet(all_tweets_np[:, 1])
-    all_tweets['broken_to_words'] = splat
-    all_tweets['number_of_words'] = get_tweet_len(all_tweets_np[:, 1])
-    all_tweets['longest_word_length'] = get_longest_word(all_tweets['broken_to_words'])
-    all_tweets['shortest_word_length'] = get_shortest_word(all_tweets['broken_to_words'])
-    all_tweets.to_csv()
+    # all_tweets['broken_to_words'] = splat
+    # all_tweets['number_of_words'] = get_tweet_len(all_tweets_np[:, 1])
+    # all_tweets['longest_word_length'] = get_longest_word(all_tweets['broken_to_words'])
+    # all_tweets['shortest_word_length'] = get_shortest_word(all_tweets['broken_to_words'])
+    # all_tweets.to_csv()
+    all_tweets = add_features(all_tweets)
     # build_lang_model(splat)
 
     g = (ggplot(all_tweets)
