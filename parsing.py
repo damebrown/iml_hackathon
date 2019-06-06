@@ -144,15 +144,10 @@ def build_data(pre_data):
     rows = []
     pre_data = np.array(pre_data)
     for d in pre_data:
-        # if d == 'tweet':
-        #     continue
         l = d[0]
         f = check_tweet(d[1])
         f.append(l)
         rows.append(f)
-    # print(rows)
-    a = pd.DataFrame(rows, columns=columns)
-    print(a.head())
     return pd.DataFrame(rows, columns=columns)
 
 
