@@ -5,7 +5,7 @@ def hashtag_plot():
     avg_hashtags = []
     var_hashtags = []
     for i in range(10):
-        tweets = np.array(get_tweets(pathes[i])['tweet'])
+        tweets = np.array(get_tweets(paths[i])['tweet'])
         hashtags = []
         for tweet in tweets:
             hashtags.append(len(extract_hashtags(tweet)))
@@ -24,7 +24,7 @@ def tags_plot():
     avg_tags = []
     var_tags = []
     for i in range(10):
-        tweets = np.array(get_tweets(pathes[i])['tweet'])
+        tweets = np.array(get_tweets(paths[i])['tweet'])
         tags = []
         for tweet in tweets:
             tags.append(len(extract_tags(tweet)))
@@ -43,7 +43,7 @@ def emojis_plot():
     avg_em = []
     var_em = []
     for i in range(10):
-        tweets = np.array(get_tweets(pathes[i])['tweet'])
+        tweets = np.array(get_tweets(paths[i])['tweet'])
         e = []
         for tweet in tweets:
             e.append(count_emoji(tweet))
@@ -62,7 +62,7 @@ def spanish_plot():
     avg_s = []
     var_s = []
     for i in range(10):
-        tweets = np.array(get_tweets(pathes[i])['tweet'])
+        tweets = np.array(get_tweets(paths[i])['tweet'])
         s = []
         for tweet in tweets:
             if is_it_spanish(tweet):
@@ -82,7 +82,7 @@ def link_plot():
     avg_s = []
     var_s = []
     for i in range(10):
-        tweets = np.array(get_tweets(pathes[i])['tweet'])
+        tweets = np.array(get_tweets(paths[i])['tweet'])
         s = []
         for tweet in tweets:
             s.append(count_link(tweet))
