@@ -33,8 +33,8 @@ def extract_tags():
 def extract_len(tweet):
     tweet = tweet.split(' ')
     number_of_words = len(tweet)
-    longest_word_length = min(tweet, key = len)
-    shortest_word_length = max(tweet, key = len)
+    shortest_word_length= min(tweet, key=len)
+    longest_word_length = max(tweet, key=len)
     return tweet, number_of_words, longest_word_length, shortest_word_length
 
 
