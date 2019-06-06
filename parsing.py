@@ -18,16 +18,9 @@ paths = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donal
          "data/labronJames_tweets.csv",
          "data/ladygaga_tweets.csv", "data/Schwarzenegger_tweets.csv"]
 
-names = ["Donald Trump",
-         "Joe Biden",
-         "Conan O'brien",
-         "Ellen Degeneres",
-         "Kim Kardashian",
-         "Lebron James",
-         "Lady Gaga",
-         "Cristiano Ronaldo",
-         "Jimmy kimmel",
-         "Arnold schwarzenegger"]
+names = ["Donald Trump", "Joe Biden" , "Conan O'brien", "Ellen Degeneres",
+         "Kim Kardashian", "Lebron James", "Lady Gaga", "Cristiano Ronaldo",
+         "Jimmy kimmel", "Arnold schwarzenegger"]
 
 _tweets = []
 
@@ -106,6 +99,9 @@ def is_it_spanish(tweet):
     s = re.findall(r"(á|õ)", tweet)
     return len(s) > 0
 
+def count_link(tweet):
+    s = re.findall(r"https:", tweet)
+    return len(s)
 
 def main():
     all_tweets = []
