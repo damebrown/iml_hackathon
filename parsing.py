@@ -5,8 +5,10 @@ import re
 # no emoji at the CS computers
 import emoji
 
-pathes = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv", "data/ellenShow_tweets.csv",
-          "data/jimmykimmel_tweets.csv", "data/joeBiden_tweets.csv", "data/KimKardashian_tweets.csv", "data/labronJames_tweets.csv",
+pathes = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv",
+          "data/ellenShow_tweets.csv",
+          "data/jimmykimmel_tweets.csv", "data/joeBiden_tweets.csv", "data/KimKardashian_tweets.csv",
+          "data/labronJames_tweets.csv",
           "data/ladygaga_tweets.csv", "data/Schwarzenegger_tweets.csv"]
 
 names = ["Donald Trump",
@@ -75,7 +77,7 @@ def print_graph(y_asix, header):
     plt.plot(names, y_asix)
     plt.title(header)
     plt.xlabel("tweeters users")
-    plt.xticks(rotation=90)
+    plt.xticks(rotation = 90)
     plt.legend()
     plt.savefig(header)
     plt.show()
@@ -98,7 +100,6 @@ def is_it_spanish(tweet):
     return len(s) > 0
 
 
-
 def main():
     all_tweets = []
     num_of_words_var = []
@@ -113,9 +114,6 @@ def main():
     print_graph(num_of_words_mean, "mean of numbers of words")
     print_graph(num_of_words_var, "var of numbers of words")
 
-
-
-main()
 
 def get_longest_word(tweets_list):
     empty = []
