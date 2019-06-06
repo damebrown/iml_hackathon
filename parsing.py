@@ -5,22 +5,15 @@ import re
 # no emoji at the CS computers
 import emoji
 
-pathes = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv",
-          "data/ellenShow_tweets.csv",
-          "data/jimmykimmel_tweets.csv", "data/joeBiden_tweets.csv", "data/KimKardashian_tweets.csv",
-          "data/labronJames_tweets.csv",
-          "data/ladygaga_tweets.csv", "data/Schwarzenegger_tweets.csv"]
+pathes = ["data/donaldTrump_tweets.csv", "data/joeBiden_tweets.csv",
+            "data/ConanOBrien_tweets.csv", "data/ellenShow_tweets.csv",
+            "data/KimKardashian_tweets.csv", "data/labronJames_tweets.csv",
+            "data/ladygaga_tweets.csv", "data/cristiano_tweets.csv",
+           "data/jimmykimmel_tweets.csv", "data/Schwarzenegger_tweets.csv"]
 
-names = ["Donald Trump",
-         "Joe Biden",
-         "Conan O'brien",
-         "Ellen Degeneres",
-         "Kim Kardashian",
-         "Lebron James",
-         "Lady Gaga",
-         "Cristiano Ronaldo",
-         "Jimmy kimmel",
-         "Arnold schwarzenegger"]
+names = ["Donald Trump", "Joe Biden" , "Conan O'brien", "Ellen Degeneres",
+         "Kim Kardashian", "Lebron James", "Lady Gaga", "Cristiano Ronaldo",
+         "Jimmy kimmel", "Arnold schwarzenegger"]
 
 _tweets = []
 
@@ -99,6 +92,9 @@ def is_it_spanish(tweet):
     s = re.findall(r"(á|õ)", tweet)
     return len(s) > 0
 
+def count_link(tweet):
+    s = re.findall(r"https:", tweet)
+    return len(s)
 
 def main():
     all_tweets = []
