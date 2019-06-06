@@ -76,6 +76,7 @@ def is_it_spanish(tweet):
     return len(s) > 0
 
 
+
 def main():
     all_tweets = []
     num_of_words_var = []
