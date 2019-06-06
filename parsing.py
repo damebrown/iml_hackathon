@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import re
+import emoji
 
 pathes = ["ConanOBrien_tweets.csv", "cristiano_tweets.csv", "donaldTrump_tweets.csv", "ellenShow_tweets.csv",
           "jimmykimmel_tweets.csv", "joeBiden_tweets.csv", "KimKardashian_tweets.csv", "labronJames_tweets.csv",
@@ -46,9 +47,16 @@ def extract_len(tweet):
     longest_word_length = max(tweet, key=len)
     return tweet, number_of_words, longest_word_length, shortest_word_length
 
+def count_emoji(tweet):
+    return len(''.join(c for c in tweet if c in emoji.UNICODE_EMOJI))
+
+def is_it_spanish(tweet):
+    s = re.findall(r"(á|õ)", tweet)
+    return len(s) > 0
+
 
 def main():
     for path in pathes:
         tweets = get_tweets(path)
 
-extract_tags()
+print(is_it_spanish('Acabei de fazer as minhas previsões para o R. Madrid vs. A. Madrid no #VivaRonaldo. E tu'))
