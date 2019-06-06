@@ -1,15 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import gensim
 import re
 # no emoji at the CS computers
 import emoji
 
-pathes = ["data/donaldTrump_tweets.csv", "data/joeBiden_tweets.csv",
-            "data/ConanOBrien_tweets.csv", "data/ellenShow_tweets.csv",
-            "data/KimKardashian_tweets.csv", "data/labronJames_tweets.csv",
-            "data/ladygaga_tweets.csv", "data/cristiano_tweets.csv",
-           "data/jimmykimmel_tweets.csv", "data/Schwarzenegger_tweets.csv"]
+paths = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv",
+         "data/ellenShow_tweets.csv",
+         "data/jimmykimmel_tweets.csv", "data/joeBiden_tweets.csv", "data/KimKardashian_tweets.csv",
+         "data/labronJames_tweets.csv",
+         "data/ladygaga_tweets.csv", "data/Schwarzenegger_tweets.csv"]
 
 names = ["Donald Trump", "Joe Biden" , "Conan O'brien", "Ellen Degeneres",
          "Kim Kardashian", "Lebron James", "Lady Gaga", "Cristiano Ronaldo",
@@ -100,7 +101,7 @@ def main():
     all_tweets = []
     num_of_words_var = []
     num_of_words_mean = []
-    for path in pathes:
+    for path in paths:
         tweets = get_tweets(path)
         tweets = np.array(tweets['tweet'])
         mean, var = counting(tweets)
@@ -127,11 +128,20 @@ def get_shortest_word(tweets_list):
     return empty
 
 
+def build_lang_model(sentences):
+    model = gensim.models.Word2Vec(sentences)
+    model.save('model.bin')
+    words = list(model.wv.vocab)
+
+
 if __name__ == "__main__":
-    frames = [get_tweets(f) for f in pathes]
+    frames = [get_tweets(f) for f in paths]
     all_tweets = pd.concat(frames)
     all_tweets_np = all_tweets.to_numpy()
-    all_tweets['broken_to_words'] = split_tweet(all_tweets_np[:, 1])
+    splat = split_tweet(all_tweets_np[:, 1])
+    all_tweets['broken_to_words'] = splat
     all_tweets['number_of_words'] = get_tweet_len(all_tweets_np[:, 1])
     all_tweets['longest_word_length'] = get_longest_word(all_tweets['broken_to_words'])
     all_tweets['shortest_word_length'] = get_shortest_word(all_tweets['broken_to_words'])
+    all_tweets.to_csv()
+    build_lang_model(splat)
