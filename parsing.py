@@ -1,10 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import gensim
 import re
 # no emoji at the CS computers
 import emoji
 from pandas.api.types import CategoricalDtype
+from plotnine import *
+from plotnine.data import mpg
 
 # from IPython import get_ipython
 # get_ipython().run_line_magic('matplotlib', 'inline')
