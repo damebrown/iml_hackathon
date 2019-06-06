@@ -5,6 +5,12 @@ import gensim
 import re
 # no emoji at the CS computers
 import emoji
+from pandas.api.types import CategoricalDtype
+from plotnine import *
+from plotnine.data import mpg
+
+# from IPython import get_ipython
+# get_ipython().run_line_magic('matplotlib', 'inline')
 
 paths = ["data/ConanOBrien_tweets.csv", "data/cristiano_tweets.csv", "data/donaldTrump_tweets.csv",
          "data/ellenShow_tweets.csv",
@@ -78,7 +84,7 @@ def print_graph(y_asix, header):
     plt.plot(names, y_asix)
     plt.title(header)
     plt.xlabel("tweeters users")
-    plt.xticks(rotation = 90)
+    plt.xticks(rotation=90)
     plt.legend()
     plt.savefig(header)
     plt.show()
@@ -119,7 +125,7 @@ def main():
 def get_longest_word(tweets_list):
     empty = []
     for tweet in tweets_list:
-        longest = max(tweet, key = length)
+        longest = max(tweet, key=length)
         empty.append(len(longest))
     return empty
 
@@ -127,7 +133,7 @@ def get_longest_word(tweets_list):
 def get_shortest_word(tweets_list):
     empty = []
     for tweet in tweets_list:
-        shortest = min(tweet, key = length)
+        shortest = min(tweet, key=length)
         empty.append(len(shortest))
     return empty
 
@@ -139,8 +145,8 @@ def build_lang_model(sentences):
 
 
 if __name__ == "__main__":
-    frames = [get_tweets(f) for f in paths]
-    all_tweets = pd.concat(frames)
+    # frames = [get_tweets(f) for f in paths]
+    all_tweets = pd.read_csv("raw_data/train.csv")
     all_tweets_np = all_tweets.to_numpy()
     splat = split_tweet(all_tweets_np[:, 1])
     all_tweets['broken_to_words'] = splat
@@ -148,4 +154,13 @@ if __name__ == "__main__":
     all_tweets['longest_word_length'] = get_longest_word(all_tweets['broken_to_words'])
     all_tweets['shortest_word_length'] = get_shortest_word(all_tweets['broken_to_words'])
     all_tweets.to_csv()
-    build_lang_model(splat)
+    # build_lang_model(splat)
+
+    g = (ggplot(all_tweets)
+         + aes(x='number_of_words', y='longest_word_length', color='user')
+         + geom_point()
+         + ggtitle('plotnine example: scatter plot')
+         )
+
+    fig = g.draw()
+    plt.show()
