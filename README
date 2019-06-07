@@ -1,0 +1,31 @@
+=======  FILES  =======
+
+#dataMassager
+
+    reading all the files, randomaly ordring the files as training and testing sets.
+    by choosing 75 % of each name's tweets.
+
+
+#parsing
+
+    extract the features:
+    hashtags,
+    tags,
+    links,
+    emoji use,
+    average tweet length
+    spanish letters,
+    common word use,
+    shortest, longest word.
+
+    building the word vector for each tweet by the following features and creating the data.
+
+
+#ploting
+
+    extract graphs of the basic data.
+    average and variance for each feature.
+
+#classifier
+
+    gets an tweet and predict which name tweeeted it.
